@@ -22,12 +22,11 @@ jobs:
         run: npm install
 
       - name: Update Start Script
-        run: echo "start: next start"
+        run: "start: next start"
 
       - name: Start Server
         run: npm start &
-        background: true
-
+        
       - name: Wait for Server
         run: |
           timeout 60 bash -c \
