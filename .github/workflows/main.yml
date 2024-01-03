@@ -32,8 +32,5 @@ jobs:
     - name: Start Web Server in Background
       run: npm run dev &
 
-    - name: Wait for Web Server to Start
-      run: sleep 10
-
     - name: Run Cypress Tests
       run: npm run test:e2e
