@@ -1,4 +1,4 @@
-name: End-to-End Tests
+name: CI/CD Pipeline
 
 on:
   push:
@@ -6,34 +6,41 @@ on:
       - main
 
 jobs:
-  e2e-tests:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
 
-      - name: Install Dependencies
-        run: npm install
+    - name: Install Dependencies
+      run: npm install
 
-      - name: Update Start Script
-        run: "start: next start"
+    - name: Run Linting
+      run: npm run lint
 
-      - name: Start Server
-        run: npm start &
-        
-      - name: Wait for Server
-        run: |
-          timeout 60 bash -c \
-          'until nc -zv localhost 3000; do sleep 1; done'
-      
-      - name: e2e tests
-        uses: cypress-io/github-action@v5
-        with:
-          browser: chrome
-          command: npm run test:e2e
+    - name: Run End-to-End Tests
+      run: npm run test:e2e
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build and Deploy
+      run: npm run build
