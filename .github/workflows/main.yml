@@ -1,4 +1,4 @@
-name: Cypress Tests
+name: End-to-End Tests
 
 on:
   push:
@@ -6,18 +6,25 @@ on:
       - main
 
 jobs:
-  cypress-run:
-    runs-on: ubuntu-22.04
-    
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  e2e-tests:
+    runs-on: ubuntu-latest
 
-      # Install NPM dependencies, cache them correctly,
-      # and run all Cypress tests
-      - name: Install and Run Cypress
-        uses: cypress-io/github-action@v6
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          build: npm run build
-          start: npm start
+          node-version: '18' # Wähle die passende Node.js-Version
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: e2e tests
+        uses: cypress-io/github-action@v5
+        with:
           browser: chrome
+          command: npm run test:e2e
+          start: npm start
+          wait-on: 'http://localhost:3000' # Passe den Port an, falls er unterschiedlich ist
