@@ -16,12 +16,12 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '14'
+        node-version: '18'
 
     - name: Install Dependencies
       run: npm install
 
-  test:
+  start-server:
     runs-on: ubuntu-latest
     needs: build
 
@@ -32,16 +32,29 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '14'
+        node-version: '18'
 
     - name: Install Dependencies
       run: npm install
 
-    - name: Start Web Server in Background
-      run: npm run dev &
+    - name: Start Web Server
+      run: npm start
 
-    - name: Wait for Web Server to Start
-      run: sleep 10
+  test:
+    runs-on: ubuntu-latest
+    needs: start-server
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install Dependencies
+      run: npm install
 
     - name: Run Cypress Tests
       run: npm run test:e2e
