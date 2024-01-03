@@ -16,10 +16,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Wähle die passende Node.js-Version
+          node-version: '14'
 
       - name: Install Dependencies
         run: npm install
+
+      - name: Update Start Script
+        run: echo "start: next start -p 3000" >> package.json
 
       - name: e2e tests
         uses: cypress-io/github-action@v5
@@ -27,4 +30,4 @@ jobs:
           browser: chrome
           command: npm run test:e2e
           start: npm start
-          wait-on: 'http://localhost:3000' # Passe den Port an, falls er unterschiedlich ist
+          wait-on: 'http://localhost:3000'
