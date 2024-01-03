@@ -24,10 +24,17 @@ jobs:
       - name: Update Start Script
         run: echo "start: next start -p 3000" >> package.json
 
+      - name: Start Server
+        run: npm start &
+        background: true
+
+      - name: Wait for Server
+        run: |
+          timeout 60 bash -c \
+          'until nc -zv localhost 3000; do sleep 1; done'
+      
       - name: e2e tests
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
           command: npm run test:e2e
-          start: npm start
-          wait-on: 'http://localhost:3000'
