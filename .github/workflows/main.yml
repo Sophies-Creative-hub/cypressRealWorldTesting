@@ -27,6 +27,8 @@ jobs:
     needs: build
 
     steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
     - name: Start Web Server in Background
       run: npm run dev &
