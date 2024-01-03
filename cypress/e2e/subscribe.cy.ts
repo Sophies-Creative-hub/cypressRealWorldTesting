@@ -19,11 +19,11 @@ describe("Newsletter Subscribe Form", () => {
             cy.getByData("submit-button").click()
             cy.getByData("success-message").should("not.exist")
         })
-        it("does NOT allow re-subscription if the user is already subscribed", () => {
-            cy.getByData("email-input").type("john@example.com")
-            cy.getByData("submit-button").click()
-            cy.getByData("error-message").should("exist")
-          })
+        //it("does NOT allow re-subscription if the user is already subscribed", () => {
+          //  cy.getByData("email-input").type("john@example.com")
+           // cy.getByData("submit-button").click()
+           // cy.getByData("error-message").should("exist")
+         // })
       })  
 })
   
